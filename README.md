@@ -1,6 +1,6 @@
-# 🔐 CI Threat Modeler
+# 🔐 CI Threat Scanner
 
-Automated **SBOM → Vulnerability Scan → Threat Model** pipeline as a **GitHub Action**.
+Automated **SBOM → Vulnerability Scan → Threat Report** pipeline as a **GitHub Action**.
 
 ---
 
@@ -8,8 +8,8 @@ Automated **SBOM → Vulnerability Scan → Threat Model** pipeline as a **GitHu
 - Generate SBOM using [Syft](https://github.com/anchore/syft)
 - Scan SBOM with [Trivy](https://github.com/aquasecurity/trivy)
 - Map CVEs → CWEs → STRIDE threat categories
-- Produce `threat_model.json`
-- Upload threat model as an artifact in CI/CD
+- Produce `report.json`
+- Upload threat report as an artifact in CI/CD
 
 ---
 
@@ -18,7 +18,7 @@ Automated **SBOM → Vulnerability Scan → Threat Model** pipeline as a **GitHu
 In your repo:
 
 ```yaml
-name: Threat Modeling
+name: AutoThreat Scan
 on: [push, pull_request]
 
 jobs:
@@ -26,6 +26,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Use CI Threat Modeler
-        uses: harshsoni-harsh/ci-threat-modeler@v1
+        uses: harshsoni-harsh/autothreat-action@main
         with:
           path: .

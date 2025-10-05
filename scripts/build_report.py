@@ -137,8 +137,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--vulns", required=True, help="Trivy vulns JSON path (vulns.json)")
     ap.add_argument("--sbom", required=False, help="SBOM (CycloneDX) path")
-    ap.add_argument("--output", required=False, default="threat_model.json")
-    ap.add_argument("--project", required=False, default="MyApp Threat Model")
+    ap.add_argument("--output", required=False, default="report.json")
+    ap.add_argument("--project", required=False, default="MyApp Report")
     args = ap.parse_args()
 
     vulns_path = Path(args.vulns)
@@ -194,7 +194,7 @@ def main():
     }
 
     Path(args.output).write_text(json.dumps(result, indent=2))
-    print(f"Wrote threat model to {args.output} ({len(threats)} threats, {len(components_map)} components)")
+    print(f"Wrote {args.output} ({len(threats)} threats, {len(components_map)} components)")
 
 if __name__ == "__main__":
     main()

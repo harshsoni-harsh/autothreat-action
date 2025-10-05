@@ -1,5 +1,5 @@
-name: "CI Threat Modeler"
-description: "Generate SBOM, scan for vulnerabilities, and produce a threat model."
+name: "AutoThreat CI"
+description: "Generate SBOM, scan for vulnerabilities, and produce a report."
 inputs:
   path:
     description: "Path to scan"
@@ -49,13 +49,13 @@ runs:
         bash $GITHUB_ACTION_PATH/scripts/scan_sbom.sh sbom.json
       shell: bash
 
-    - name: Build Threat Model
+    - name: Build Report
       run: |
-        python3 $GITHUB_ACTION_PATH/scripts/build_threat_model.py --vulns vulns.json --sbom sbom.json --output threat_model.json --project "${{ github.repository }}"
+        python3 $GITHUB_ACTION_PATH/scripts/build_report.py --vulns vulns.json --sbom sbom.json --output report.json --project "${{ github.repository }}"
       shell: bash
 
-    - name: Upload threat model artifact
+    - name: Upload report artifact
       uses: actions/upload-artifact@v4
       with:
-        name: threat-model
-        path: threat_model.json
+        name: report
+        path: report.json
