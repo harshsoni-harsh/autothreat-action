@@ -5,6 +5,9 @@ inputs:
     description: "Path to scan"
     required: false
     default: "."
+  api_key:
+    description: "API key for AutoThreat platform"
+    required: true
   fail_on_severity:
     description: "Fail workflow if vulnerabilities at or above this severity are found"
     required: false
@@ -22,6 +25,13 @@ runs:
     
     - run: echo "$HOME/.local/bin" >> $GITHUB_PATH
       shell: bash
+
+    - name: Set inputs as environment variables
+      shell: bash
+      run: |
+        export INPUT_PATH="${{ inputs.path }}"
+        export INPUT_API_KEY="${{ inputs.api_key }}"
+        export INPUT_FAIL_ON_SEVERITY="${{ inputs.fail_on_severity }}"
 
     - name: Install Python dependencies
       run: |
@@ -41,7 +51,7 @@ runs:
 
     - name: Generate SBOM
       run: |
-        bash $GITHUB_ACTION_PATH/scripts/generate_sbom.sh "${{ inputs.path }}"
+        bash $GITHUB_ACTION_PATH/scripts/generate_sbom.sh "$INPUT_PATH"
       shell: bash
 
     - name: Scan SBOM
@@ -56,7 +66,7 @@ runs:
 
     - name: Sync with platform
       run: |
-        python3 $GITHUB_ACTION_PATH/scripts/sync_with_platform.py --sbom sbom.json --api-key "${{ secrets.AUTO_THREAT_API_KEY }}" --project "${{ github.repository }}"
+        python3 $GITHUB_ACTION_PATH/scripts/sync_with_platform.py --sbom sbom.json --api-key "$INPUT_API_KEY" --project "${{ github.repository }}"
       shell: bash
 
     - name: Upload report artifact
