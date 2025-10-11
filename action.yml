@@ -54,6 +54,11 @@ runs:
         python3 $GITHUB_ACTION_PATH/scripts/build_report.py --vulns vulns.json --sbom sbom.json --output report.json --project "${{ github.repository }}"
       shell: bash
 
+    - name: Sync with platform
+      run: |
+        python3 $GITHUB_ACTION_PATH/scripts/sync_with_platform.py --sbom sbom.json --api-key "${{ secrets.AUTO_THREAT_API_KEY }}" --project "${{ github.repository }}"
+      shell: bash
+
     - name: Upload report artifact
       uses: actions/upload-artifact@v4
       with:
