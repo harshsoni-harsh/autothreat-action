@@ -123,8 +123,8 @@ class AutoThreatSync:
 
     def _get_current_timestamp(self) -> str:
         """Get current timestamp in ISO format."""
-        from datetime import datetime
-        return datetime.utcnow().isoformat() + 'Z'
+        from datetime import datetime, UTC
+        return datetime.now(UTC).isoformat()
 
 
 def main():
@@ -175,7 +175,6 @@ Examples:
     if args.verbose:
         import logging
         logging.basicConfig(level=logging.DEBUG)
-        requests.logging.getLogger().setLevel(logging.DEBUG)
 
     try:
         # Initialize the sync client
