@@ -49,24 +49,9 @@ runs:
         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b $HOME/.local/bin v0.66.0
       shell: bash
 
-    - name: Generate SBOM
+    - name: Run AutoThreat CI
       run: |
-        bash $GITHUB_ACTION_PATH/scripts/generate_sbom.sh "$INPUT_PATH"
-      shell: bash
-
-    - name: Scan SBOM
-      run: |
-        bash $GITHUB_ACTION_PATH/scripts/scan_sbom.sh sbom.json
-      shell: bash
-
-    - name: Build Report
-      run: |
-        python3 $GITHUB_ACTION_PATH/scripts/build_report.py --vulns vulns.json --sbom sbom.json --output report.json --project "${{ github.repository }}"
-      shell: bash
-
-    - name: Sync with platform
-      run: |
-        python3 $GITHUB_ACTION_PATH/scripts/sync_with_platform.py --sbom sbom.json --api-key "$INPUT_API_KEY" --project "${{ github.repository }}"
+        python3 $GITHUB_ACTION_PATH/scripts/run.py --path "$INPUT_PATH" --api-key "$INPUT_API_KEY" --fail-on-severity "$INPUT_FAIL_ON_SEVERITY" --project "${{ github.repository }}"
       shell: bash
 
     - name: Upload report artifact
